@@ -69,14 +69,14 @@ export default function HomePage() {
           <p className="text-gray-500 text-sm">Tải file tài liệu, AI tự tạo bài kiểm tra cho bạn</p>
         </div>
 
-        <div
-          className={`border-2 border-dashed rounded-xl p-6 text-center cursor-pointer transition-colors mb-6 ${
+        <label
+          htmlFor="file-input"
+          className={`block border-2 border-dashed rounded-xl p-6 text-center cursor-pointer transition-colors mb-6 ${
             dragOver ? "border-indigo-500 bg-indigo-50" : "border-gray-300 hover:border-indigo-400"
           }`}
           onDragOver={(e) => { e.preventDefault(); setDragOver(true); }}
           onDragLeave={() => setDragOver(false)}
           onDrop={handleDrop}
-          onClick={() => document.getElementById("file-input")?.click()}
         >
           <input
             id="file-input"
@@ -97,7 +97,7 @@ export default function HomePage() {
               <p className="text-xs mt-1">Hỗ trợ .xlsx, .xls, .pdf</p>
             </div>
           )}
-        </div>
+        </label>
 
         <div className="space-y-4 mb-6">
           <div>

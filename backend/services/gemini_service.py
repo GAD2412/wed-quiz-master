@@ -8,8 +8,14 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-genai.configure(api_key=os.environ["GEMINI_API_KEY"])
-_model = genai.GenerativeModel("gemini-1.5-flash")
+_model = None
+
+def _get_model():
+    global _model
+    if _model is None:
+        genai.configure(api_key=os.environ["GEMINI_API_KEY"])
+        _model = genai.GenerativeModel("gemini-1.5-flash")
+    return _model
 
 
 def select_and_shuffle_questions(
@@ -34,7 +40,7 @@ def select_and_shuffle_questions(
     prompt = _build_selection_prompt(pool_text, count, topic, difficulty, len(questions))
 
     try:
-        response = _model.generate_content(prompt)
+        response = _get_model().generate_content(prompt)
         selected_indices = _parse_indices(response.text, len(questions))
     except Exception:
         # Fallback: random selection
@@ -66,7 +72,7 @@ def generate_explanations(questions: List[Dict[str, Any]]) -> List[Dict[str, Any
     )
 
     try:
-        response = _model.generate_content(prompt)
+        response = _get_model().generate_content(prompt)
         explanations = _parse_json_array(response.text)
         for item in explanations:
             idx = item.get("index", -1)
